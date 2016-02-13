@@ -1,0 +1,149 @@
+#:kivy 1.9.0
+
+
+GridLayout:
+
+    rows: 1
+    LeftArea:
+    RightArea:
+
+
+<LeftArea@FloatLayout>:
+
+    canvas:
+        Color:
+            rgb: 0, 1, 0
+        Rectangle:
+            size: self.size
+            pos: self.pos
+    Image:
+        source: 'moneyswags.gif'
+        allow_stretch: True
+        size_hint: (.5, .5)
+        pos_hint: {'top': 1, 'left': 1}
+        
+    Label:
+        id: my_label
+        font_size: 30
+        text: 'Search Term: '
+        pos_hint: {'top': .2, 'right': .5}
+        size_hint: (.3, None)
+    Searchterm:
+        id: searchterm
+        size_hint: (.4, .05)
+        pos_hint: {'top': .145, 'right': .95}
+        on_text: self.searchterm(self.text)
+    Label:
+        font_size: 30
+        text: 'Copy first Link to clipboard'
+        pos_hint: {'top': .4, 'right': .5}
+        size_hint: (.3, None)
+    Checkbox:
+        pos_hint: {'top': .4, 'right': .9}
+        size_hint: (None, None)
+        on_active: self.on_check('copy_first')
+        canvas:
+            Color:
+                rgba: 1, 0, 0, 0.5
+            Rectangle:
+                size: self.size
+                pos: self.pos
+    Label:
+        font_size: 30
+        text: 'Copy all links to clipboard'
+        pos_hint: {'top': .5, 'right': .5}
+        size_hint: (.3, None)
+    Checkbox:
+        group: 'clipboard'
+        pos_hint: {'top': .5, 'right': .9}
+        size_hint: (None, None)
+        on_active: self.on_check('copy_all')
+        canvas:
+            Color:
+                rgba: 0, 0, 1, 0.5
+            Rectangle:
+                size: self.size
+                pos: self.pos
+
+
+<RightArea@GridLayout>:
+
+    cols: 1
+    size_hint_x: 0.3
+    spacing: '10dp'
+    ScrollView:
+        LinksGrid:
+            id: links_grid
+    BoxLayout:
+        size_hint_y: 0.1
+        cols: 1
+        GetLinksButton:
+            links_grid: links_grid
+        Clearlinkbuttons:
+            links_grid: links_grid
+
+
+<LinksGrid@GridLayout>:
+    cols: 1
+    spacing: '5dp'
+    size_hint_y: None
+    height: self.minimum_height
+
+
+<GetLinksButton>:
+    size_hint_y: 1
+    text: 'get links'
+    on_press: self.run()
+
+
+<Clearlinkbuttons>:
+    size_hint_y: 1
+    text: 'clear links'
+    on_press: self.clear_links()
+
+
+<LinkButton>:
+    size_hint_y: None
+    height: '80dp'
+    on_press: self.popup(self.text)
+
+
+<Checkbox>:
+    group: 'clipboard'
+
+
+<Del_view_copy>:
+
+    GridLayout:
+        rows: 2
+        FloatLayout:
+            Label:
+                pos_hint: {'left': .8, 'top': .8}
+                multiline: True
+                text: root.text
+        GridLayout:
+            cols: 3
+            size_hint: (.5, .5)
+            Button:
+                text: 'Delete'
+                on_press: root.delete()
+            Button:
+                text: 'Close'
+                on_press: root.close()
+                canvas:
+                    Color:
+                        rgba: 1, .5, .5, .5
+                    Rectangle:
+                        size: self.size
+                        pos: self.pos
+            Button:
+                pos_hint: {'top': 1, 'right': 1}
+                text: 'Copy'
+                on_press: root.copy()
+                canvas:
+                    Color:
+                        rgba: 1, 0, 0, .5
+                    Rectangle:
+                        size: self.size
+                        pos: self.pos
+
