@@ -135,5 +135,5 @@ class GetLinks:
         return urls
 
 if __name__=='__main__':
-    Test().run()
+    Spider().run()
 
